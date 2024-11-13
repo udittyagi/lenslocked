@@ -3,17 +3,19 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
 )
 
-// func homeHandler(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-// 	fmt.Fprint(w, "<h1>Hello World Udit Tyagi</h1>")
-// }
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, "<h1>Hello World</h1>")
+}
 
-// func contacthandler(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Contenct-Type", "text/html; charset=utf-8")
-// 	fmt.Fprint(w, "<h1>Contact Page</h1><a href=\"https://www.google.com\">Google</a>")
-// }
+func contacthandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Contenct-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, "<h1>Contact Page</h1><a href=\"https://www.google.com\">Google</a>")
+}
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -36,56 +38,15 @@ func faqHandler(w http.ResponseWriter, r *http.Request) {
   `)
 }
 
-func pathHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		fmt.Fprint(w, "<h1>Hello World Udit Tyagi</h1>")
-	case "/contact":
-		fmt.Fprint(w, "<h1>Contact Page</h1><a href=\"https://www.google.com\">Google</a>")
-	default:
-		{
-			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprint(w, "<h1>NOT FOUND</h1>")
-		}
-
-	}
-}
-
-type Router struct{}
-
-func (router Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.URL.Path {
-	case "/":
-		fmt.Fprint(w, "<h1>Hello World Udit Tyagi</h1>")
-	case "/contact":
-		fmt.Fprint(w, "<h1>Contact Page</h1><a href=\"https://www.google.com\">Google</a>")
-	case "/faq":
-		faqHandler(w, r)
-	default:
-		{
-			http.Error(w, "PAGE NOT FOUND", http.StatusNotFound)
-		}
-	}
-}
-
-//HandlerFunc type with base type as function ==> this is how http.HandlerFunc is implemented in go
-// type HandlerFunc func(http.ResponseWriter, *http.Request)
-
-// func (f HandlerFunc) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-// 	f(w, r)
-// }
-
 func main() {
-	// http.HandleFunc("/", homeHandler)
-	// http.HandleFunc("/contact", contacthandler)
-	// http.HandleFunc("/", pathHandler)
+	r := chi.NewRouter()
+	r.Get("/", homeHandler)
+	r.Get("/contact", contacthandler)
+	r.Get("/faq", faqHandler)
+	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, "PAGE NOT FOUND", http.StatusNotFound)
+	})
+
 	fmt.Println("Server Running on Port 3000")
-	// http.ListenAndServe(":3000", nil)
-
-	//----------------------
-	var handler Router
-	http.ListenAndServe(":3000", handler)
-
-	//---------------
-	// http.ListenAndServe(":3000", http.HandlerFunc(pathHandler))
+	http.ListenAndServe(":3000", r)
 }
