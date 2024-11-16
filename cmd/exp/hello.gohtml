@@ -1,0 +1,16 @@
+<h1>Hello {{.Name}}</h1>
+{{.Age}}
+<p>{{.Meta.Address}}</p>
+
+// This Bio will be encoded differently as compared to Bio used inside script
+//  This is called contextual encoding (encoding based on context)
+{{.Bio}}
+
+<script>
+    const obj = {
+        name: {{.Name}}
+        age: {{.Age}}
+        bio: {{.Bio}}
+    }
+    console.log(obj)
+</script>
