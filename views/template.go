@@ -15,7 +15,6 @@ func Must(t Template, err error) Template {
 	return t
 }
 
-// Used in embed branch
 func ParseFs(fs fs.FS, pattern string) (Template, error) {
 
 	tpl, err := template.ParseFS(fs, pattern)

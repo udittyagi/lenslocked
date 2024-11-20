@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/udittyagi/lenslocked/controllers"
+	"github.com/udittyagi/lenslocked/templates"
 	"github.com/udittyagi/lenslocked/views"
 )
 
@@ -17,14 +17,14 @@ func main() {
 
 	r.Get("/", controllers.StaticHandler(
 		views.Must(
-			views.Parse(filepath.Join("templates", "home.gohtml")))))
+			views.ParseFs(templates.FS, "home.gohtml"))))
 
 	r.Get("/contact", controllers.StaticHandler(
 		views.Must(
-			views.Parse(filepath.Join("templates", "contact.gohtml")))))
+			views.ParseFs(templates.FS, "contact.gohtml"))))
 
 	r.Get("/faq", controllers.StaticHandler(views.Must(
-		views.Parse(filepath.Join("templates", "faq.gohtml")))))
+		views.ParseFs(templates.FS, "faq.gohtml"))))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "PAGE NOT FOUND", http.StatusNotFound)
