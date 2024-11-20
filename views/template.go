@@ -3,9 +3,29 @@ package views
 import (
 	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 )
+
+func Must(t Template, err error) Template {
+	if err != nil {
+		panic(err)
+	}
+	return t
+}
+
+// Used in embed branch
+func ParseFs(fs fs.FS, pattern string) (Template, error) {
+
+	tpl, err := template.ParseFS(fs, pattern)
+	if err != nil {
+		return Template{}, fmt.Errorf("Parsing Error %w", err)
+	}
+	return Template{
+		htmlTpl: tpl,
+	}, nil
+}
 
 func Parse(filePath string) (Template, error) {
 	tpl, err := template.ParseFiles(filePath)
