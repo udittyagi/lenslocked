@@ -2,29 +2,24 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/udittyagi/lenslocked/views"
 )
 
 func executeTemplate(w http.ResponseWriter, filePath string) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles(filePath)
+	tpl, err := views.Parse(filePath)
 	if err != nil {
 		log.Printf("Error while Parsing Template: %v", err)
 		http.Error(w, "Error While Parsing Template", http.StatusInternalServerError)
 		return
 	}
 
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		log.Printf("Error while Executing Template: %v", err)
-		http.Error(w, "Error While Executing Template", http.StatusInternalServerError)
-	}
+	tpl.Execute(w, nil)
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
