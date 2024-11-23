@@ -17,7 +17,7 @@ func main() {
 
 	r.Get("/", controllers.StaticHandler(
 		views.Must(
-			views.ParseFs(templates.FS, "home.gohtml"))))
+			views.ParseFs(templates.FS, "home.gohtml", "layout-parts.gohtml"))))
 
 	r.Get("/contact", controllers.StaticHandler(
 		views.Must(
