@@ -23,7 +23,7 @@ func main() {
 		views.Must(
 			views.ParseFs(templates.FS, "contact.gohtml"))))
 
-	r.Get("/faq", controllers.StaticHandler(views.Must(
+	r.Get("/faq", controllers.FaqHandler(views.Must(
 		views.ParseFs(templates.FS, "faq.gohtml"))))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
