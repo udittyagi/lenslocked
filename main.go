@@ -17,14 +17,14 @@ func main() {
 
 	r.Get("/", controllers.StaticHandler(
 		views.Must(
-			views.ParseFs(templates.FS, "home.gohtml", "layout-parts.gohtml"))))
+			views.ParseFs(templates.FS, "home.gohtml", "tailwind.gohtml"))))
 
 	r.Get("/contact", controllers.StaticHandler(
 		views.Must(
-			views.ParseFs(templates.FS, "contact.gohtml"))))
+			views.ParseFs(templates.FS, "contact.gohtml", "tailwind.gohtml"))))
 
 	r.Get("/faq", controllers.FaqHandler(views.Must(
-		views.ParseFs(templates.FS, "faq.gohtml"))))
+		views.ParseFs(templates.FS, "faq.gohtml", "tailwind.gohtml"))))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "PAGE NOT FOUND", http.StatusNotFound)
