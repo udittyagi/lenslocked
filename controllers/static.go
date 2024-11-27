@@ -3,17 +3,15 @@ package controllers
 import (
 	"html/template"
 	"net/http"
-
-	"github.com/udittyagi/lenslocked/views"
 )
 
-func StaticHandler(tpl views.Template) http.HandlerFunc {
+func StaticHandler(tpl Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tpl.Execute(w, nil)
 	}
 }
 
-func FaqHandler(tpl views.Template) http.HandlerFunc {
+func FaqHandler(tpl Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		data := []struct {
 			Question string
