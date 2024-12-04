@@ -81,24 +81,41 @@ func main() {
 	// }
 	// fmt.Println("User created id =", id)
 
-	id := 3
-	row := db.QueryRow(`
-		SELECT name, email
-		FROM users
-		WHERE id = $1;
-		`, id,
-	)
-	var name, email string
-	err = row.Scan(&name, &email)
+	// id := 3
+	// row := db.QueryRow(`
+	// 	SELECT name, email
+	// 	FROM users
+	// 	WHERE id = $1;
+	// 	`, id,
+	// )
+	// var name, email string
+	// err = row.Scan(&name, &email)
 
-	if err == sql.ErrNoRows {
-		fmt.Println("Now Row Found")
+	// if err == sql.ErrNoRows {
+	// 	fmt.Println("Now Row Found")
+	// }
+
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// fmt.Printf("User Information name = %s, email = %s\n", name, email)
+
+	userId := 1
+
+	for i := 0; i < 5; i++ {
+		amount := i * 100
+		description := fmt.Sprintf("Fake Description for Order : %d", i)
+		_, err = db.Exec(`
+			INSERT INTO orders (user_id, amount, description)
+			VALUES ($1, $2, $3);
+		`, userId, amount, description)
+
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("User Information name = %s, email = %s\n", name, email)
+	fmt.Println("Created Fake Orders")
 
 }
